@@ -10,7 +10,7 @@ endif
 
 let b:loaded_markdown_preview = 1
 
-function s:open_file(filename)
+function! s:open_file(filename)
     if has('mac') || has('macunix')
         call system("open " . fnameescape(a:filename))
     elseif has('unix')
