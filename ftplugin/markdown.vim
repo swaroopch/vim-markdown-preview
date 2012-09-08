@@ -34,3 +34,4 @@ function! s:ShowMarkdownPreview(line1, line2)
 endfunction
 
 command! -range=% MarkdownPreview call s:ShowMarkdownPreview(<line1>, <line2>)
+command! -range=% MdP call s:ShowMarkdownPreview(<line1>, <line2>)
