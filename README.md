@@ -1,5 +1,9 @@
-In Vim, (optionally) select some text and then press `:MarkdownPreview` and see the rendered results in a browser.
+#(Multi) Markdown-Preview for Vim#
 
-Useful when writing long-form text in Markdown but ultimately want to (1) send the rendered content in a rich email or (2) post to a blog in HTML format, etc.
+Markown-Preview is an essential plugin for writing Markdown with Vim.  You can preview your markdown file, or just part of it, quickly and easily. You don't even have to convert the file after you seet it, you can just copy from the browser's source and go!
 
-Needs [multimarkdown](http://fletcherpenney.net/multimarkdown/) to be installed. 
+##How to use##
+
+In Vim, type :MarkdownPreview (:MdP for short) to see the rendered results in a browser.  You can also choose to preview one small area by selecting it.
+
+**Note:** [multimarkdown](http://fletcherpenney.net/multimarkdown/) is required to be installed.
