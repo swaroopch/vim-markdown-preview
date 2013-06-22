@@ -7,31 +7,51 @@
 if exists("b:loaded_markdown_preview")
 	finish
 endif
-
 let b:loaded_markdown_preview = 1
+
 
 function! s:ShowMarkdownPreview(line1, line2)
 	let text = getline(a:line1, a:line2)
-	let ofilename = "markdown-preview.md"
-	let nfilename = "markdown-preview.html"
-	if has('mac') || has('macunix')
-		call writefile(text, "/tmp/" . ofilename)
-		call system("multimarkdown /tmp/" . ofilename . " > /tmp/" . nfilename)
-		call system("open /tmp/" . nfilename)
-	elseif has('unix')
-		call writefile(text, "/tmp/" . ofilename)
-		call system("multimarkdown /tmp/" . ofilename . " > /tmp/" . nfilename)
-		call system("gnome-open /tmp/" . nfilename)
-	elseif has('win32') || has('win64') || has('win16')
-		let s:vimtmp = $appdata . "\\vim\\tmp"
-		if isdirectory(s:vimtmp) == 'FALSE'
-			call system("mkdir " . s:vimtmp)
+
+	" Set names for temp files.
+	let mkdfile = "markdown-preview.md"
+	let htmfile = "markdown-preview.html"
+
+	if has('unix')
+		" Set path to temp files.
+		let mkdfile = "/tmp/" . mkdfile
+		let htmfile = "/tmp/" . htmfile
+
+		" Convert Markdown to HTML.
+		call writefile(text, mkdfile)
+		if has('win32unix')
+			call system("multimarkdown c:/cygwin" . mkdfile . " > c:/cygwin" . htmfile)
+		else
+			call system("multimarkdown " . mkdfile . " > " . htmfile)
 		endif
-		call writefile(text, $appdata . '\vim\tmp\' . ofilename)
-		call system('multimarkdown "' . $appdata . '\vim\tmp\' . ofilename . '" -o "' . $appdata . '\vim\tmp\' . nfilename . '"')
-		call system('"' . $appdata . '\vim\tmp\' . nfilename . '"')
+
+		" Open HTML.
+		if has('mac') || has('macunix')
+			call system("open " . htmfile)
+		elseif has('win32unix')
+			call system("cygstart " . htmfile)
+		else
+			call system("xdg-open " . htmfile)
+		endif
+
+	elseif has('win32') || has('win64')
+		let mkdfile = $temp . "\\" . mkdfile
+		let htmfile = $temp . "\\" . htmfile
+
+		" Convert Markdown to HTML.
+		call writefile(text, mkdfile)
+		call system('multimarkdown "' . mkdfile . '" -o "' . htmfile . '"')
+
+		" Open HTML.
+		call system('"' . htmfile . '"')
 	endif
 endfunction
+
 
 command! -range=% MarkdownPreview call s:ShowMarkdownPreview(<line1>, <line2>)
 command! -range=% MdP call s:ShowMarkdownPreview(<line1>, <line2>)
